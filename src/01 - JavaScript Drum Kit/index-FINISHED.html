@@ -58,35 +58,24 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  function playSound(e){
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
-    if(!audio) return; //stop the function from running altogether
-    audio.currentTime = 0
-    audio.play()
-    key.classList.add('playing')
-  }
-
-  // arrow function console logs different from function
-  // let removeTransition = (e) => {
-  //   if(e.propertyName != 'transform') return; //skip it if it's not a transform
-    // console.log(e.propertyName)
-    // console.log(this)
-    //this DOES NOT WORK with arrow function
-    // this.classList.remove('playing')
-  // }
-
   function removeTransition(e) {
-    if(e.propertyName != 'transform') return; //skip it if it's not a transform
-    // console.log(e.propertyName)
-    // console.log(this)
-    this.classList.remove('playing')
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
   }
 
-  const keys = document.querySelectorAll('.key')
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition))
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if (!audio) return;
 
-  window.addEventListener('keydown', playSound)
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+  const keys = Array.from(document.querySelectorAll('.key'));
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound);
 </script>
 
 
